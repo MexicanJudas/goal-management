@@ -4,7 +4,7 @@ import json
 
 def does_file_exist(path):
     test_path = "/"+path
-    return(os.path.isfile(path))
+    return(os.path.isfile(test_path))
 
 def return_field(file_path, type, name, field):
     with open(file_path) as input_file:
@@ -24,3 +24,17 @@ def dict_in_file(file_path, file_type, dict_name):
     with open(file_path) as dict_file:
         file_struct = json.load(dict_file)
     return(dict_name in file_struct[file_type])
+
+def field_in_dict(file_path, file_type, dict_name, dict_field):
+    if dict_in_file(file_path, file_type, dict_name):
+        with open(file_path) as input_file:
+            input = json.load(input_file)
+            input_file.close()
+        if dict_field in input[file_type][dict_name]:
+            return True
+        else:
+            return False
+
+
+    else:
+        return(False)

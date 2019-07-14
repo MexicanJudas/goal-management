@@ -69,19 +69,19 @@ def list_projects():
         output = json.load(project_file)
         print(json.dumps(output))
 
-def edit_project():
-    project_edit = True
-    if does_file_exist(project_path):
-        list_projects()
-
-        while project_edit == True:
-            project_name = input("Enter a project name to edit the field of!")
-
-
+# def edit_project():
+#     project_edit = True
+#     if does_file_exist(project_path):
+#         list_projects()
+#
+#         while project_edit == True:
+#             project_name = input("Enter a project name to edit the field of!")
 
 
 
-def validate_project(project_name, project_field):
-    with open(project_path) as project_file:
-        projects = json.load(project_path)
-    return(project_field in projects["PROJECTS"][project_name])
+
+#
+# def validate_project(project_name, project_field):
+#     with open(project_path) as project_file:
+#         projects = json.load(project_path)
+#     return(project_field in projects["PROJECTS"][project_name])

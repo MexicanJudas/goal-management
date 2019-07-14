@@ -9,7 +9,7 @@ def challenge_handler():
     if option == 2:
         list_challenges()
     if option == 3:
-        remove_challenge()
+        edit_challenge()
     if option == 4:
         return ()
 
@@ -45,32 +45,6 @@ def declare_challenge():
                          }
     }
     }
-
-def edit_challenge():
-    challenge_edit = True
-    if does_file_exist(challenge_path):
-        list_challenges()
-    while challenge_edit == True:
-        challenge_name = input("Enter the name of the goal you would like to edit")
-        if dict_in_file(challenge_path, "CHALLENGES", challenge_name):
-            challenge_type = input("Enter which field you would like to change \n\
-                                   FRAME: Frame\n\
-                                   PURPOSE: Purpose\n\
-                                   ACHIEVEABLE: Achieveable\n")
-            challenge_type = challenge_type.upper()
-            input_check = validate_challenge(challenge_name, challenge_type)
-            if input_check == True:
-                result = return_field(challenge_path, "CHALLENGES", challenge_name, challenge_type)
-                challenge_change = input("Please enter what you would like to change %s to!" % result)
-                field_change(challenge_path, "CHALLENGES", challenge_name, challenge_type, challenge_change)
-                print("%s changed to %s" % result, challenge_change)
-                challenge_edit = False
-
-
-
-
-    #Handle if this doesn't or does exist
-
     if does_file_exist(challenge_path):
         try:
             with open(challenge_path) as challenge_file:
@@ -85,12 +59,34 @@ def edit_challenge():
         with open(challenge_path, 'w+') as challenge_file:
             json.dump(current_challenge, challenge_file)
 
+def edit_challenge():
+    challenge_edit = True
+    if does_file_exist(challenge_path):
+        list_challenges()
+    while challenge_edit == True:
+        challenge_name = input("Enter the name of the goal you would like to edit")
+        if dict_in_file(challenge_path, "CHALLENGES", challenge_name):
+            challenge_type = input("Enter which field you would like to change \n\
+                                   FRAME: Frame\n\
+                                   PURPOSE: Purpose\n\
+                                   ACHIEVEABLE: Achieveable\n")
+            challenge_type = challenge_type.upper()
+            input_check = field_in_dict(challenge_path,"CHALLENGES",challenge_name, challenge_type)
+            if input_check == True:
+                result = return_field(challenge_path, "CHALLENGES", challenge_name, challenge_type)
+                challenge_change = input("Please enter what you would like to change %s to!" % result)
+                field_change(challenge_path, "CHALLENGES", challenge_name, challenge_type, challenge_change)
+                print("%s changed to %s" % result, challenge_change)
+                challenge_edit = False
+
+
+
+
+    #Handle if this doesn't or does exist
+
+
+
 def list_challenges():
     with open(challenge_path) as challenge_file:
         output = json.load(challenge_file)
         print(json.dumps(output))
-
-def validate_challenge(challenge_name, challenge_field):
-    with open(challenge_path) as challenge_file:
-        challenges = json.load(challenge_file)
-    return (challenge_field in challenges["CHALLENGES"][challenge_name])

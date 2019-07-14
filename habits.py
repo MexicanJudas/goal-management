@@ -95,7 +95,7 @@ def edit_habit():
                                 PRIMER: Primer\n \
                                 PATH: Path\n")
                 habit_type = habit_type.upper()
-                input_check = validate_habit(habit_name, habit_type)
+                input_check = field_in_dict(habit_path,"HABITS",habit_name, habit_type)
 
                 if input_check == True:
                     result = return_field(habit_path, "HABITS", habit_name, habit_type)
@@ -109,10 +109,6 @@ def edit_habit():
     else:
         print("You have not set habits!")
 
-def validate_habit(habit_name, habit_field):
-    with open(habit_path) as habit_file:
-        habits = json.load(habit_file)
-    return (habit_field in habits["HABITS"][habit_name])
 
 
 
