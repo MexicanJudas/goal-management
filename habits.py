@@ -3,8 +3,11 @@ from file_handle import *
 habit_path = 'habits.json'
 
 def habit_handler():
-    habit_handler = True
-    while habit_handler == True:
+
+    habit_input = True
+
+    while habit_input == True:
+
         option = int(input("1: Add habit\n2: List habits\n3:Remove habit\n4: Back"))
         if option == 1:
             declare_habit()
@@ -77,12 +80,13 @@ def list_habits():
         print(json.dumps(output))
 
 def edit_habit():
+    habit_edit = True
     if does_file_exist(habit_path):
         list_habits()
 
-        while True:
+        while habit_edit == True:
             habit_name = input("Enter habit name to edit field of")
-            if habit_in_file(habit_name):
+            if dict_in_file(habit_path, "HABITS", habit_name):
                 habit_type = input("Enter which field you would like to change\n \
                                 TYPE: Type\n \
                                 PURPOSE: Purpose\n \
@@ -96,9 +100,9 @@ def edit_habit():
                 if input_check == True:
                     result = return_field(habit_path, "HABITS", habit_name, habit_type)
                     habit_change = input("Please enter what you would like to change %s to!" % result)
-                    field_change(habit_path, "HABITS", habit_name, habit_type)
-                    print("%s changed to" % result, habit_path, "HABITS", habit_name, habit_type)
-
+                    field_change(habit_path, "HABITS", habit_name, habit_type, habit_change)
+                    print("%s changed to %s" % result, habit_change)
+                    habit_edit = False
 
                 else:
                     print("This is not an input field.")
@@ -111,9 +115,5 @@ def validate_habit(habit_name, habit_field):
     return (habit_field in habits["HABITS"][habit_name])
 
 
-def habit_in_file(habit_name):
-    with open(habit_path) as habit_file:
-        habits = json.load(habit_file)
-    return(habit_name in habits["HABITS"])
 
 

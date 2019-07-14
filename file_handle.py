@@ -20,3 +20,7 @@ def field_change(file_path, type, name, field, change_to):
     with open(file_path, 'w') as output_file:
         json.dump(file_read, output_file)
 
+def dict_in_file(file_path, file_type, dict_name):
+    with open(file_path) as dict_file:
+        file_struct = json.load(dict_file)
+    return(dict_name in file_struct[file_type])

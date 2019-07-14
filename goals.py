@@ -9,7 +9,7 @@ def goal_handler():
     if option == 2:
         list_goals()
     if option == 3:
-        remove_goal()
+        edit_goal()
     if option == 4:
         return ()
 
@@ -41,10 +41,10 @@ def declare_goal():
 
     current_goal = {"GOALS": {
                         goal : {
-                         "Purpose":goal_purpose,
-                         "habits":goal_habits,
-                         "Projects":goal_projects,
-                         "Challenges":goal_challenge
+                         "PURPOSE":goal_purpose,
+                         "HABITS":goal_habits,
+                         "PROJECTS":goal_projects,
+                         "CHALLENGES":goal_challenge
                          }
                     }
     }
@@ -68,3 +68,33 @@ def list_goals():
     with open(goal_path) as goal_file:
         output = json.load(goal_file)
         print(json.dumps(output))
+
+def edit_goal():
+    goal_edit = True
+    if does_file_exist(goal_path):
+        list_goals()
+
+        while goal_edit == True:
+            goal_name = input("Enter goal name to edit field of")
+            if dict_in_file(goal_path, "GOALS", goal_name):
+                    goal_type = input("Enter which field you would like to change\n\
+                                    PURPOSE: Purpose\n\
+                                    HABITS: Habits\n\
+                                    PROJECTS: Projects\n\
+                                    CHALLENGES: Challenges\n")
+                    goal_type = goal_type.upper()
+                    input_check = validate_goal(goal_name, goal_type)
+
+                    if input_check == True:
+                        result = return_field(goal_path, "GOALS", goal_name, goal_type)
+                        goal_change = input("Please enter what you would like to change %s to!" % result)
+                        field_change(goal_path, "GOALS", goal_name, goal_type, goal_change)
+                        print("%s changed to %s" % result, goal_change)
+                        goal_edit = False
+
+def validate_goal(goal_name, goal_field):
+    with open(goal_path) as goal_file:
+        goals = json.load(goal_file)
+    return (goal_field in goals["GOALS"][goal_name])
+
+
