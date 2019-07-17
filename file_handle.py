@@ -1,10 +1,17 @@
 import os.path
-from os import path
 import json
 
 def does_file_exist(path):
-    test_path = "/"+path
-    return(os.path.isfile(test_path))
+    try:
+        with open(path) as test_file:
+            output = json.load(test_file);
+    except:
+        return(False)
+    dict_list = ["HABITS", "PROJECTS", "GOALS", "CHALLENGES"]
+    for item in dict_list:
+        if item in output:
+            return(True)
+    return(False)
 
 def return_field(file_path, type, name, field):
     with open(file_path) as input_file:
@@ -34,7 +41,10 @@ def field_in_dict(file_path, file_type, dict_name, dict_field):
             return True
         else:
             return False
-
-
     else:
         return(False)
+
+def list_all(file_name, file_type):
+    with open(file_name) as out_file:
+        output = json.load(out_file)
+        print("Your file is %s" % json.dumps(output))

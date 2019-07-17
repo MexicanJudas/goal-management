@@ -7,14 +7,14 @@ def challenge_handler():
     if option == 1:
         declare_challenge()
     if option == 2:
-        list_challenges()
+        list_all(challenge_path, "CHALLENGES")
     if option == 3:
         edit_challenge()
     if option == 4:
         return ()
 
 def remove_challenge():
-    list_challenges()
+    list_all(challenge_path, "CHALLENGES")
     if does_file_exist(challenge_path):
         challenge_delete = input("Enter the name of the challenge you would like to delete")
         with open(challenge_path) as challenge_file:
@@ -39,9 +39,9 @@ def declare_challenge():
 
     current_challenge = {"CHALLENGES" : {
                         challenge : {
-                         "Frame": challenge_time,
-                         "Purpose":challenge_purpose,
-                         "Achievable?":challenge_achieveable
+                         "FRAME": challenge_time,
+                         "PURPOSE":challenge_purpose,
+                         "ACHIEVABLE":challenge_achieveable
                          }
     }
     }
@@ -62,23 +62,30 @@ def declare_challenge():
 def edit_challenge():
     challenge_edit = True
     if does_file_exist(challenge_path):
-        list_challenges()
-    while challenge_edit == True:
-        challenge_name = input("Enter the name of the goal you would like to edit")
-        if dict_in_file(challenge_path, "CHALLENGES", challenge_name):
-            challenge_type = input("Enter which field you would like to change \n\
-                                   FRAME: Frame\n\
-                                   PURPOSE: Purpose\n\
-                                   ACHIEVEABLE: Achieveable\n")
-            challenge_type = challenge_type.upper()
-            input_check = field_in_dict(challenge_path,"CHALLENGES",challenge_name, challenge_type)
-            if input_check == True:
-                result = return_field(challenge_path, "CHALLENGES", challenge_name, challenge_type)
-                challenge_change = input("Please enter what you would like to change %s to!" % result)
-                field_change(challenge_path, "CHALLENGES", challenge_name, challenge_type, challenge_change)
-                print("%s changed to %s" % result, challenge_change)
-                challenge_edit = False
-
+        list_all(challenge_path, "CHALLENGES")
+        while challenge_edit == True:
+            challenge_name = input("Enter the name of the goal you would like to edit")
+            if dict_in_file(challenge_path, "CHALLENGES", challenge_name):
+                challenge_type = input("Enter which field you would like to change \n\
+                                       FRAME: Frame\n\
+                                       PURPOSE: Purpose\n\
+                                       ACHIEVEABLE: Achieveable\n\
+                                       EXIT: Exit\n")
+                challenge_type = challenge_type.upper()
+                input_check = field_in_dict(challenge_path,"CHALLENGES",challenge_name, challenge_type)
+                if input_check == True:
+                    result = return_field(challenge_path, "CHALLENGES", challenge_name, challenge_type)
+                    challenge_change = input("Please enter what you would like to change %s to!" % result)
+                    field_change(challenge_path, "CHALLENGES", challenge_name, challenge_type, challenge_change)
+                    print("%s changed to %s" % result, challenge_change)
+                    challenge_edit = False
+                else:
+                    if challenge_type == "EXIT":
+                        challenge_edit = False
+                        break
+                    print("This is not a field")
+    else:
+        print("You have not set challenges!")
 
 
 
@@ -86,7 +93,4 @@ def edit_challenge():
 
 
 
-def list_challenges():
-    with open(challenge_path) as challenge_file:
-        output = json.load(challenge_file)
-        print(json.dumps(output))
+

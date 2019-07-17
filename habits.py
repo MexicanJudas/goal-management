@@ -12,7 +12,7 @@ def habit_handler():
         if option == 1:
             declare_habit()
         if option == 2:
-            list_habits()
+            list_all(habit_path, "HABITS")
         if option == 3:
             edit_habit()
         if option == 4:
@@ -20,7 +20,7 @@ def habit_handler():
 
 def remove_habit():
 
-    list_habits()
+    list_all(habit_path, "HABITS")
     if does_file_exist(habit_path):
         habit_delete = input("Enter the name of the habit you would like to delete")
         with open(habit_path) as habit_file:
@@ -53,12 +53,12 @@ def declare_habit():
 
     current_habit = {"HABITS":{
                     habit : {
-                    "Type":habit_type,
-                    "Purpose":habit_purpose,
-                    "Princple":habit_principle,
-                    "Plan":habit_achieve,
-                    "Primer":habit_primer,
-                    "Path":habit_record
+                    "TYPE":habit_type,
+                    "PURPOSE":habit_purpose,
+                    "PRINCIPLE":habit_principle,
+                    "PLAN":habit_achieve,
+                    "PRIMER":habit_primer,
+                    "PATH":habit_record
     }}}
 
     if does_file_exist(habit_path):
@@ -74,15 +74,13 @@ def declare_habit():
     else:
         with open(habit_path, 'w+') as habit_file:
             json.dump(current_habit, habit_file)
-def list_habits():
-    with open(habit_path) as habit_file:
-        output = json.load(habit_file)
-        print(json.dumps(output))
+
+
 
 def edit_habit():
     habit_edit = True
     if does_file_exist(habit_path):
-        list_habits()
+        list_all(habit_path, "HABITS")
 
         while habit_edit == True:
             habit_name = input("Enter habit name to edit field of")
@@ -93,7 +91,8 @@ def edit_habit():
                                 PRINCIPLE: Principle\n \
                                 PLAN: Plan\n \
                                 PRIMER: Primer\n \
-                                PATH: Path\n")
+                                PATH: Path\n\
+                                EXIT: Exit\n")
                 habit_type = habit_type.upper()
                 input_check = field_in_dict(habit_path,"HABITS",habit_name, habit_type)
 
@@ -105,6 +104,9 @@ def edit_habit():
                     habit_edit = False
 
                 else:
+                    if habit_type == "EXIT":
+                        input_check = False
+                        break
                     print("This is not an input field.")
     else:
         print("You have not set habits!")

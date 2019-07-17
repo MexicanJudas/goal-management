@@ -7,14 +7,15 @@ def project_handler():
     if option == 1:
         declare_project()
     if option == 2:
-        list_projects()
+        list_all(project_path, "PROJECTS")
     if option == 3:
         remove_project()
     if option == 4:
         return()
 
 def remove_project():
-    list_projects()
+    print(does_file_exist(project_path))
+    list_all(project_path, "PROJECTS")
     if does_file_exist(project_path):
         proj_delete = input("Enter the name of the project you would like to delete")
         with open(project_path) as project_file:
@@ -48,7 +49,9 @@ def declare_project():
                             "OUTCOME": project_outcome,
                             "BRAINSTORM": project_brainstorm,
                             "ORGANISATION": project_organise,
-                            "ACTIONS": project_actions
+                            "ACTIONS": project_actions,
+                            "LINKS": { "HABITS" : [], "GOALS" : [], "CHALLENGES" : []
+                            }
                             }
                         }}
     if does_file_exist(project_path):
@@ -64,24 +67,41 @@ def declare_project():
     else:
         with open(project_path, 'w+') as project_file:
             json.dump(current_project, project_file)
-def list_projects():
-    with open(project_path) as project_file:
-        output = json.load(project_file)
-        print(json.dumps(output))
-
-# def edit_project():
-#     project_edit = True
-#     if does_file_exist(project_path):
-#         list_projects()
-#
-#         while project_edit == True:
-#             project_name = input("Enter a project name to edit the field of!")
 
 
 
+def edit_project():
+    project_edit = True
+    if does_file_exist(project_path):
+        list_all(project_path, "PROJECTS")
+        while project_edit == True:
+            project_name = input("Enter a project name to edit the field of!")
+            if dict_in_file(project_path, "PROJCETS", project_name):
+                project_type = input("Enter which field you would like to change \n\
+                                     PURPOSE: Purpose\n\
+                                     PRINCIPLES: Principles\n\
+                                     OUTCOME: Outcome\n\
+                                     BRAINSTORM: Brainstorm\n\
+                                     ORGANISATION: Organisation\n\
+                                     ACTIONS: Actions\n\
+                                     LINKS: Links\n\
+                                     EXIT: Exit\n")
+                project_type = project_type.upper()
+                input_check = field_in_dict(project_path, "PROJECTS", project_name, project_type)
+                if input_check == True:
+                    result = return_field(project_path, "PROJECTS", project_name, project_type)
+                    project_change = input("Please enter what you would like to change %s to!" % result)
+                    field_change(project_path, "PROJECTS", project_name, project_type, project_change)
+                    print("%s changed to %s", result, project_change)
+                    project_edit = False
 
-#
-# def validate_project(project_name, project_field):
-#     with open(project_path) as project_file:
-#         projects = json.load(project_path)
-#     return(project_field in projects["PROJECTS"][project_name])
+                else:
+                    if project_type == "EXIT":
+                        project_edit = False
+                        break
+                    print("This is not a field")
+
+    else:
+        print("You have not set projects!")
+
+# FINISH HERE
