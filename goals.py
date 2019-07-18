@@ -1,7 +1,9 @@
+global goal_path
+goal_path = 'goals.json'
 import json
 from file_handle import *
 
-goal_path = 'goals.json'
+
 def goal_handler():
     option = int(input("1: Add goal\n2: List goals\n3: Remove goal\n4: Back"))
     if option == 1:

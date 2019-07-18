@@ -4,8 +4,6 @@ from projects import *
 from challenges import *
 from goals import *
 from habits import *
-from file_handle import *
-
 
 #Python file for each case.
 

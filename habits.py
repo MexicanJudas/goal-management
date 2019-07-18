@@ -1,6 +1,7 @@
-import json
-from file_handle import *
+global habit_path
 habit_path = 'habits.json'
+from file_handle import *
+
 
 def habit_handler():
 

@@ -1,7 +1,10 @@
+global challenge_path
+challenge_path = 'challenges.json'
 import json
 from file_handle import *
 
-challenge_path = 'challenges.json'
+
+
 def challenge_handler():
     option = int(input("1: Add challenge\n2: List challenges\n3: Remove challenge\n4: Back"))
     if option == 1:

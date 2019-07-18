@@ -1,16 +1,22 @@
+global project_path
+goal_path = 'goals.json'
 import json
 from file_handle import *
 
 project_path = 'projects.json'
 def project_handler():
-    option = int(input("1: Add project\n2:List projects\n3:Remove project\n4:Back"))
+    option = int(input("1: Add project\n2:List projects\n3:Edit Project\n4:Remove Project\n5:Link Project\n6:Back"))
     if option == 1:
         declare_project()
     if option == 2:
         list_all(project_path, "PROJECTS")
     if option == 3:
-        remove_project()
+        edit_project()
     if option == 4:
+        remove_project()
+    if option == 5:
+        link_handler("PROJECT")
+    if option == 6:
         return()
 
 def remove_project():

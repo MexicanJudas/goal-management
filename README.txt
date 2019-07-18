@@ -1,10 +1,6 @@
 To do:
-
-Add appending to files, and creation if file doesn't exist -p
-
-Add deletion from file, if file does exist -
-
-Rename projects of the same name
+Link projects with the other fields in question.
+Then create some OOP methodologies for handlign all this stuff.
 
 ##DETECT IF FILE DOESN'T EXIST
 
